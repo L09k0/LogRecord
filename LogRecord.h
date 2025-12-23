@@ -9,22 +9,10 @@
 #include <mutex>
 #include <iostream>
 #include <filesystem>
+#include <codecvt>
 
 class LogRecord
 {
-private:
-	std::string filename;
-	std::mutex logMut;
-	std::ofstream file;
-
-	explicit LogRecord();
-	//LogRecord();
-	~LogRecord();
-
-	bool ExistLog();
-	std::string GetTime(const char* format);
-	std::string getFileName();
-
 public:
 	static LogRecord* GetInstance();
 	LogRecord(const LogRecord&) = delete;
@@ -43,7 +31,28 @@ public:
 		_EXCEPTION
 	};
 
-	void msg(std::string msg, StatusMsg _statusmsg, bool print);
+	void msg(const std::string& _msg, StatusMsg _statusmsg, bool print);
+	void msg(const std::wstring& _msg, StatusMsg _statusmsg, bool print);
+	void msg(const char* _msg, StatusMsg _statusmsg, bool print);
+	void msg(const wchar_t* _msg, StatusMsg _statusmsg, bool print);
+
+	template<class T>
+	void msg(T msg, StatusMsg _statusmsg, bool print);
+
+private:
+	std::string filename;
+	std::mutex logMut;
+	std::ofstream file;
+
+	explicit LogRecord();
+	//LogRecord();
+	~LogRecord();
+
+	bool ExistLog();
+	std::string GetTime(const char* format);
+	std::string getFileName();
+	std::string GetStatusString(StatusMsg status);
+
 };
 
 inline LogRecord::LogRecord()
@@ -89,7 +98,8 @@ inline bool LogRecord::ExistLog()
 	}
 	catch (const std::exception& e)
 	{
-		// f
+		std::cerr << "Error in ExistLog: " << e.what() << "\n";
+		return false;  
 	}
 }
 
@@ -114,58 +124,166 @@ inline std::string LogRecord::getFileName()
 	return filename;
 }
 
+inline std::string LogRecord::GetStatusString(StatusMsg status)
+{
+	switch (status)
+	{
+	case LogRecord::StatusMsg::_INFO:
+		return "[INFO]";
+		break;
+	case LogRecord::StatusMsg::_WARNING:
+		return "[WARNING]";
+		break;
+	case LogRecord::StatusMsg::_ERROR:
+		return "[ERROR]";
+		break;
+	case LogRecord::StatusMsg::_FATALERROR:
+		return "[FATALERROR]";
+		break;
+	case LogRecord::StatusMsg::_REGISTER:
+		return "[REGISTER]";
+		break;
+	case LogRecord::StatusMsg::_INITIALIZATION:
+		return "[INITIALIZATION]";
+		break;
+	case LogRecord::StatusMsg::_CLIENT:
+		return "[CLIENT]";
+		break;
+	case LogRecord::StatusMsg::_SERVER:
+		return "[SERVER]";
+		break;
+	case LogRecord::StatusMsg::_EXCEPTION:
+		return "[EXCEPTION]";
+		break;
+	default:
+		return "[INFO]";
+		break;
+	}
+}
+
 LogRecord* LogRecord::GetInstance()
 {
 	static LogRecord instance;
 	return& instance;
 }
 
-inline void LogRecord::msg(std::string msg, StatusMsg _statusmsg, bool print)
+inline void LogRecord::msg(const std::string& msg, StatusMsg _statusmsg, bool print)
 {
 	std::lock_guard<std::mutex> lock(logMut);
-	std::string statusmsg;
-	switch (_statusmsg)
+
+	std::string statusMsg = GetStatusString(_statusmsg);
+	std::string times = GetTime("%H:%M:%S");
+	std::string engMsg = statusMsg + "[" + times + "]: " + msg + "\n";
+
+	if (print)
+		std::cout << engMsg;
+
+	try
 	{
-	case LogRecord::StatusMsg::_INFO:
-		statusmsg = "[INFO]";
-		break;
-	case LogRecord::StatusMsg::_WARNING:
-		statusmsg = "[WARNING]";
-		break;
-	case LogRecord::StatusMsg::_ERROR:
-		statusmsg = "[ERROR]";
-		break;
-	case LogRecord::StatusMsg::_FATALERROR:
-		statusmsg = "[FATALERROR]";
-		break;
-	case LogRecord::StatusMsg::_REGISTER:
-		statusmsg = "[REGISTER]";
-		break;
-	case LogRecord::StatusMsg::_INITIALIZATION:
-		statusmsg = "[INITIALIZATION]";
-		break;
-	case LogRecord::StatusMsg::_CLIENT:
-		statusmsg = "[CLIENT]";
-		break;
-	case LogRecord::StatusMsg::_SERVER:
-		statusmsg = "[SERVER]";
-		break;
-	case LogRecord::StatusMsg::_EXCEPTION:
-		statusmsg = "[EXCEPTION]";
-		break;
-	default:
-		statusmsg = "[INFO]";
-		break;
+		if (!file.is_open())
+		{
+			file.open(getFileName(), std::ios::app);
+			if (!file.is_open())
+			{
+				std::cerr << "Failed to open log file for writing!\n";
+				return;
+			}
+		}
+
+		file << engMsg;
+		file.flush();
 	}
+	catch (const std::exception& e)
+	{
+		std::cerr << "Failed to write to log file" << e.what() << "\n";
+		if (file.is_open())
+			file.close();
+	}
+}
 
-	if (print != false)
-		std::cout << statusmsg << "[" << GetTime("%H:%M:%S") << "]: " << msg << "\n";
+inline void LogRecord::msg(const std::wstring& msg, StatusMsg _statusmsg, bool print)
+{
+	std::lock_guard<std::mutex> lock(logMut);
 
-	file.open(getFileName(), std::ios::app);
-	if (file.is_open())
-		file << statusmsg << "[" << GetTime("%H:%M:%S") << "]: " << msg << /*" adrr \"" << GetInstance() <<*/ "\n";
-	else
-		std::cerr << "Log file not open !\n";
+	std::string statusMsg = GetStatusString(_statusmsg);
+	std::string times = GetTime("%H:%M:%S");
 
-	file.close();
+	std::wstring_convert<std::codecvt_utf8<wchar_t>> converter;
+	std::string convertMsg = converter.to_bytes(msg);
+
+	std::string engMsg = statusMsg + "[" + times + "]: " + convertMsg + "\n";
+
+	if (print)
+		std::wcout << statusMsg.c_str() << L"[" << times.c_str() << L"]: " << msg << L"\n";
+
+	try
+	{
+		if (!file.is_open())
+		{
+			file.open(getFileName(), std::ios::app);
+			if (!file.is_open())
+			{
+				std::cerr << "Failed to open log file for writing!\n";
+				return;
+			}
+		}
+
+		file << engMsg;
+		file.flush();
+	}
+	catch (const std::exception& e)
+	{
+		std::cerr << "Failed to write to log file" << e.what() << "\n";
+		if (file.is_open())
+			file.close();
+	}
+}
+
+inline void LogRecord::msg(const char* _msg, StatusMsg _statusmsg, bool print)
+{
+	this->msg(std::string(_msg), _statusmsg, print);
+}
+
+inline void LogRecord::msg(const wchar_t* _msg, StatusMsg _statusmsg, bool print)
+{
+	this->msg(std::wstring(_msg), _statusmsg, print);
+}
+
+template<class T>
+inline void LogRecord::msg(T msg, StatusMsg _statusmsg, bool print)
+{
+	std::lock_guard<std::mutex> lock(logMut);
+	std::string statusMsg = GetStatusString(_statusmsg);
+	std::string times = GetTime("%H:%M:%S");
+
+	std::ostringstream oss;
+	oss << msg;
+	std::string msgStr = oss.str();
+
+	std::string engMsg = statusMsg + "[" + times + "]: " + msgStr + "\n";
+
+	if (print)
+		std::cout << engMsg;
+
+	try
+	{
+		if (!file.is_open())
+		{
+			file.open(getFileName(), std::ios::app);
+			if (!file.is_open())
+			{
+				std::cerr << "Failed to open log file for writing!\n";
+				return;
+			}
+		}
+
+		file << engMsg;
+		file.flush();
+	}
+	catch (const std::exception&)
+	{
+		std::cerr << "Failed to write to log file\n";
+		if (file.is_open())
+			file.close();
+	}
 }
