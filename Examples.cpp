@@ -1,0 +1,6 @@
+#include "LogRecord.h"
+
+int main()
+{
+	return 0;
+}
