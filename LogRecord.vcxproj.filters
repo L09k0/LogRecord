@@ -1,21 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="include">
-      <UniqueIdentifier>{7cee8a51-8a34-4116-b2ec-38ef9caeafc6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Test">
-      <UniqueIdentifier>{5a0e8c49-d56f-4f06-9f58-751dbfc4be4b}</UniqueIdentifier>
-    </Filter>
+    <ClInclude Include="LogRecord.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="LogRecord.h">
-      <Filter>include</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="Examples.cpp">
-      <Filter>Test</Filter>
-    </ClCompile>
+    <ClCompile Include="Examples.cpp" />
   </ItemGroup>
 </Project>
