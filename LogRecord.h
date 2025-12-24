@@ -2,15 +2,15 @@
 
 #pragma warning(disable : 4996)
 
-#define INFO_MSG(MSG, PRINT) LogRecord::GetInstance()->msg(MSG, LogRecord::StatusMsg::_INFO, PRINT)
-#define WARNING_MSG(MSG, PRINT) LogRecord::GetInstance()->msg(MSG, LogRecord::StatusMsg::_WARNING, PRINT)
-#define ERROR_MSG(MSG, PRINT) LogRecord::GetInstance()->msg(MSG, LogRecord::StatusMsg::_ERROR, PRINT)
-#define FATALERROR_MSG(MSG, PRINT) LogRecord::GetInstance()->msg(MSG, LogRecord::StatusMsg::_FATALERROR, PRINT)
-#define REGISTER_MSG(MSG, PRINT) LogRecord::GetInstance()->msg(MSG, LogRecord::StatusMsg::_REGISTER, PRINT)
-#define INITIALIZATION_MSG(MSG, PRINT) LogRecord::GetInstance()->msg(MSG, LogRecord::StatusMsg::_INITIALIZATION, PRINT)
-#define CLIENT_MSG(MSG, PRINT) LogRecord::GetInstance()->msg(MSG, LogRecord::StatusMsg::_CLIENT, PRINT)
-#define SERVER_MSG(MSG, PRINT) LogRecord::GetInstance()->msg(MSG, LogRecord::StatusMsg::_SERVER, PRINT)
-#define EXCEPTION_MSG(MSG, PRINT) LogRecord::GetInstance()->msg(MSG, LogRecord::StatusMsg::_EXCEPTION, PRINT)
+#define INFO_LOG(MSG, PRINT) LogRecord::GetInstance()->msg(MSG, LogRecord::StatusMsg::_INFO, PRINT)
+#define WARNING_LOG(MSG, PRINT) LogRecord::GetInstance()->msg(MSG, LogRecord::StatusMsg::_WARNING, PRINT)
+#define ERROR_LOG(MSG, PRINT) LogRecord::GetInstance()->msg(MSG, LogRecord::StatusMsg::_ERROR, PRINT)
+#define FATALERROR_LOG(MSG, PRINT) LogRecord::GetInstance()->msg(MSG, LogRecord::StatusMsg::_FATALERROR, PRINT)
+#define REGISTER_LOG(MSG, PRINT) LogRecord::GetInstance()->msg(MSG, LogRecord::StatusMsg::_REGISTER, PRINT)
+#define INITIALIZATION_LOG(MSG, PRINT) LogRecord::GetInstance()->msg(MSG, LogRecord::StatusMsg::_INITIALIZATION, PRINT)
+#define CLIENT_LOG(MSG, PRINT) LogRecord::GetInstance()->msg(MSG, LogRecord::StatusMsg::_CLIENT, PRINT)
+#define SERVER_LOG(MSG, PRINT) LogRecord::GetInstance()->msg(MSG, LogRecord::StatusMsg::_SERVER, PRINT)
+#define EXCEPTION_LOG(MSG, PRINT) LogRecord::GetInstance()->msg(MSG, LogRecord::StatusMsg::_EXCEPTION, PRINT)
 
 #include <fstream>
 #include <string>

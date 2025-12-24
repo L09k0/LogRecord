@@ -3,23 +3,23 @@
 int main()
 {
 	// Test Status
-	INFO_MSG("String", true);
-	WARNING_MSG("String", true);
-	ERROR_MSG("String", true);
-	FATALERROR_MSG("String", true);
-	REGISTER_MSG("String", true);
-	INITIALIZATION_MSG("String", true);
-	CLIENT_MSG("String", true);
-	SERVER_MSG("String", true);
-	EXCEPTION_MSG("String", true);
+	INFO_LOG("String", true);
+	WARNING_LOG("String", true);
+	ERROR_LOG("String", true);
+	FATALERROR_LOG("String", true);
+	REGISTER_LOG("String", true);
+	INITIALIZATION_LOG("String", true);
+	CLIENT_LOG("String", true);
+	SERVER_LOG("String", true);
+	EXCEPTION_LOG("String", true);
 
 	// Test type
-	INFO_MSG(L"WString", true);
-	INFO_MSG(12345, true);
-	INFO_MSG(3.14, true);
+	INFO_LOG(L"WString", true);
+	INFO_LOG(12345, true);
+	INFO_LOG(3.14, true);
 
 	// Test visible console
-	INFO_MSG("String", false);
+	INFO_LOG("String", false);
 
 	system("pause");
 	return 0;
