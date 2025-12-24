@@ -12,37 +12,41 @@ LogRecord Это легковесная одна файловая библиот
 
 int main()
 {
-	LogRecord::GetInstance()->msg("String", LogRecord::StatusMsg::_INFO, true); // Запись типа std::string
-	LogRecord::GetInstance()->msg(L"String", LogRecord::StatusMsg::_INFO, true); // Запись типа std::wstring
-	LogRecord::GetInstance()->msg(12345, LogRecord::StatusMsg::_INFO, true); // Запись типа int
-	LogRecord::GetInstance()->msg(3.14, LogRecord::StatusMsg::_INFO, true); // Запись типа double
+	// Test Status
+	INFO_LOG("String", true);
+	WARNING_LOG("String", true);
+	ERROR_LOG("String", true);
+	FATALERROR_LOG("String", true);
+	REGISTER_LOG("String", true);
+	INITIALIZATION_LOG("String", true);
+	CLIENT_LOG("String", true);
+	SERVER_LOG("String", true);
+	EXCEPTION_LOG("String", true);
 
+	// Test type
+	INFO_LOG(L"WString", true);
+	INFO_LOG(12345, true);
+	INFO_LOG(3.14, true);
+
+	// Test visible console
+	INFO_LOG("String", false);
+
+	system("pause");
 	return 0;
 }
 ```
-Первый параметр передаваемый в метод msg сама строка, второй ее категория, категорий есть 6 видов
-```
-		INFO,
-		WARNING,
-		ERROR,
-		FATALERROR,
-		REGISTER,
-		INITIALIZATION,
-		CLIENT,
-		SERVER,
-		EXCEPTION
-```
-
 
 Последний же параметр это, будет ли отображаться сообщение на экране/консоли
 
-<img width="462" height="166" alt="image" src="https://github.com/user-attachments/assets/49245d7b-1460-4d33-b206-2e5a68b670d3" />
+<img width="446" height="270" alt="image" src="https://github.com/user-attachments/assets/e93bb693-d15e-4123-9a66-98574e47be49" />
+
 
 _Как показано здесь_
 
 
 # Результат
-<img width="449" height="200" alt="image" src="https://github.com/user-attachments/assets/0bc1574c-807d-4d9f-8c0c-bb307f5737e6" />
+<img width="501" height="365" alt="image" src="https://github.com/user-attachments/assets/269feb31-a435-4825-9b5a-639e7ba1f573" />
+
 
 _Результат выполнения программы, в файле_
 
