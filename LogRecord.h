@@ -2,15 +2,31 @@
 
 #pragma warning(disable : 4996)
 
-#define INFO_LOG(MSG, PRINT) LogRecord::GetInstance()->msg(MSG, LogRecord::StatusMsg::_INFO, PRINT)
-#define WARNING_LOG(MSG, PRINT) LogRecord::GetInstance()->msg(MSG, LogRecord::StatusMsg::_WARNING, PRINT)
-#define ERROR_LOG(MSG, PRINT) LogRecord::GetInstance()->msg(MSG, LogRecord::StatusMsg::_ERROR, PRINT)
-#define FATALERROR_LOG(MSG, PRINT) LogRecord::GetInstance()->msg(MSG, LogRecord::StatusMsg::_FATALERROR, PRINT)
-#define REGISTER_LOG(MSG, PRINT) LogRecord::GetInstance()->msg(MSG, LogRecord::StatusMsg::_REGISTER, PRINT)
-#define INITIALIZATION_LOG(MSG, PRINT) LogRecord::GetInstance()->msg(MSG, LogRecord::StatusMsg::_INITIALIZATION, PRINT)
-#define CLIENT_LOG(MSG, PRINT) LogRecord::GetInstance()->msg(MSG, LogRecord::StatusMsg::_CLIENT, PRINT)
-#define SERVER_LOG(MSG, PRINT) LogRecord::GetInstance()->msg(MSG, LogRecord::StatusMsg::_SERVER, PRINT)
-#define EXCEPTION_LOG(MSG, PRINT) LogRecord::GetInstance()->msg(MSG, LogRecord::StatusMsg::_EXCEPTION, PRINT)
+//#define LOGINFO(MSG, ...) LOGINFO_BOOL(##__VA_ARGS__)
+//
+//#define LOGINFO_BOOL(PRINT) \
+//	LogRecord::GetInstance()->msg(PRINT, LogRecord::StatusMsg::_INFO, true)
+//
+//#define WRITELOG_INFO(MSG, PRINT) LogRecord::GetInstance()->msg(MSG, LogRecord::StatusMsg::_INFO, PRINT)
+//#define WRITELOG_WARNING(MSG, PRINT) LogRecord::GetInstance()->msg(MSG, LogRecord::StatusMsg::_WARNING, PRINT)
+//#define WRITELOG_ERROR(MSG, PRINT) LogRecord::GetInstance()->msg(MSG, LogRecord::StatusMsg::_ERROR, PRINT)
+//#define WRITE_FATALERROR(MSG, PRINT) LogRecord::GetInstance()->msg(MSG, LogRecord::StatusMsg::_FATALERROR, PRINT)
+//#define WRITE_REGISTER(MSG, PRINT) LogRecord::GetInstance()->msg(MSG, LogRecord::StatusMsg::_REGISTER, PRINT)
+//#define WRITE_INITIALIZATION(MSG, PRINT) LogRecord::GetInstance()->msg(MSG, LogRecord::StatusMsg::_INITIALIZATION, PRINT)
+//#define WRITE_CLIENT(MSG, PRINT) LogRecord::GetInstance()->msg(MSG, LogRecord::StatusMsg::_CLIENT, PRINT)
+//#define WRITE_SERVER(MSG, PRINT) LogRecord::GetInstance()->msg(MSG, LogRecord::StatusMsg::_SERVER, PRINT)
+//#define WRITE_EXCEPTION(MSG, PRINT) LogRecord::GetInstance()->msg(MSG, LogRecord::StatusMsg::_EXCEPTION, PRINT)
+//
+////#define PRINT_INFO_LOG(MSG) LogRecord::GetInstance()->msg(MSG, LogRecord::StatusMsg::_INFO, false)
+//#define PRINT_WARNING_LOG(MSG) LogRecord::GetInstance()->msg(MSG, LogRecord::StatusMsg::_WARNING, false)
+//#define PRINT_ERROR_LOG(MSG) LogRecord::GetInstance()->msg(MSG, LogRecord::StatusMsg::_ERROR, false)
+//#define PRINT_FATALERROR_LOG(MSG) LogRecord::GetInstance()->msg(MSG, LogRecord::StatusMsg::_FATALERROR, false)
+//#define PRINT_REGISTER_LOG(MSG) LogRecord::GetInstance()->msg(MSG, LogRecord::StatusMsg::_REGISTER, false)
+//#define PRINT_INITIALIZATION_LOG(MSG) LogRecord::GetInstance()->msg(MSG, LogRecord::StatusMsg::_INITIALIZATION, false)
+//#define PRINT_CLIENT_LOG(MSG) LogRecord::GetInstance()->msg(MSG, LogRecord::StatusMsg::_CLIENT, false)
+//#define PRINT_SERVER_LOG(MSG) LogRecord::GetInstance()->msg(MSG, LogRecord::StatusMsg::_SERVER, false)
+//#define PRINT_EXCEPTION_LOG(MSG) LogRecord::GetInstance()->msg(MSG, LogRecord::StatusMsg::_EXCEPTION, false)
+
 
 #include <fstream>
 #include <string>
@@ -64,6 +80,114 @@ private:
 	std::string GetStatusString(StatusMsg status);
 
 };
+
+template<class T>
+constexpr auto LOGINFO(T&& MSG) -> decltype(auto)
+{
+	return LogRecord::GetInstance()->msg(std::forward<T>(MSG), LogRecord::StatusMsg::_INFO, false);
+}
+
+template<class T1, class T2>
+constexpr auto LOGINFO(T1 MSG, T2 PRINT) -> decltype(auto)
+{
+	return LogRecord::GetInstance()->msg(std::forward<T1>(MSG), LogRecord::StatusMsg::_INFO, PRINT);
+}
+
+template<class T>
+constexpr auto LOGWARNING(T&& MSG) -> decltype(auto)
+{
+	return LogRecord::GetInstance()->msg(std::forward<T>(MSG), LogRecord::StatusMsg::_WARNING, false);
+}
+
+template<class T1, class T2>
+constexpr auto LOGWARNING(T1 MSG, T2 PRINT) -> decltype(auto)
+{
+	return LogRecord::GetInstance()->msg(std::forward<T1>(MSG), LogRecord::StatusMsg::_WARNING, PRINT);
+}
+
+template<class T>
+constexpr auto LOGERROR(T&& MSG) -> decltype(auto)
+{
+	return LogRecord::GetInstance()->msg(std::forward<T>(MSG), LogRecord::StatusMsg::_ERROR, false);
+}
+
+template<class T1, class T2>
+constexpr auto LOGERROR(T1 MSG, T2 PRINT) -> decltype(auto)
+{
+	return LogRecord::GetInstance()->msg(std::forward<T1>(MSG), LogRecord::StatusMsg::_ERROR, PRINT);
+}
+
+template<class T>
+constexpr auto LOGFATALERROR(T&& MSG) -> decltype(auto)
+{
+	return LogRecord::GetInstance()->msg(std::forward<T>(MSG), LogRecord::StatusMsg::_FATALERROR, false);
+}
+
+template<class T1, class T2>
+constexpr auto LOGFATALERROR(T1 MSG, T2 PRINT) -> decltype(auto)
+{
+	return LogRecord::GetInstance()->msg(std::forward<T1>(MSG), LogRecord::StatusMsg::_FATALERROR, PRINT);
+}
+
+template<class T>
+constexpr auto LOGREGISTER(T&& MSG) -> decltype(auto)
+{
+	return LogRecord::GetInstance()->msg(std::forward<T>(MSG), LogRecord::StatusMsg::_REGISTER, false);
+}
+
+template<class T1, class T2>
+constexpr auto LOGREGISTER(T1 MSG, T2 PRINT) -> decltype(auto)
+{
+	return LogRecord::GetInstance()->msg(std::forward<T1>(MSG), LogRecord::StatusMsg::_REGISTER, PRINT);
+}
+
+template<class T>
+constexpr auto LOGINITIALIZATION(T&& MSG) -> decltype(auto)
+{
+	return LogRecord::GetInstance()->msg(std::forward<T>(MSG), LogRecord::StatusMsg::_INITIALIZATION, false);
+}
+
+template<class T1, class T2>
+constexpr auto LOGINITIALIZATION(T1 MSG, T2 PRINT) -> decltype(auto)
+{
+	return LogRecord::GetInstance()->msg(std::forward<T1>(MSG), LogRecord::StatusMsg::_INITIALIZATION, PRINT);
+}
+
+template<class T>
+constexpr auto LOGCLIENT(T&& MSG) -> decltype(auto)
+{
+	return LogRecord::GetInstance()->msg(std::forward<T>(MSG), LogRecord::StatusMsg::_CLIENT, false);
+}
+
+template<class T1, class T2>
+constexpr auto LOGCLIENT(T1 MSG, T2 PRINT) -> decltype(auto)
+{
+	return LogRecord::GetInstance()->msg(std::forward<T1>(MSG), LogRecord::StatusMsg::_CLIENT, PRINT);
+}
+
+template<class T>
+constexpr auto LOGSERVER(T&& MSG) -> decltype(auto)
+{
+	return LogRecord::GetInstance()->msg(std::forward<T>(MSG), LogRecord::StatusMsg::_SERVER, false);
+}
+
+template<class T1, class T2>
+constexpr auto LOGSERVER(T1 MSG, T2 PRINT) -> decltype(auto)
+{
+	return LogRecord::GetInstance()->msg(std::forward<T1>(MSG), LogRecord::StatusMsg::_SERVER, PRINT);
+}
+
+template<class T>
+constexpr auto LOGEXCEPTION(T&& MSG) -> decltype(auto)
+{
+	return LogRecord::GetInstance()->msg(std::forward<T>(MSG), LogRecord::StatusMsg::_EXCEPTION, false);
+}
+
+template<class T1, class T2>
+constexpr auto LOGEXCEPTION(T1 MSG, T2 PRINT) -> decltype(auto)
+{
+	return LogRecord::GetInstance()->msg(std::forward<T1>(MSG), LogRecord::StatusMsg::_EXCEPTION, PRINT);
+}
 
 inline LogRecord::LogRecord()
 {

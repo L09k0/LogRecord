@@ -2,24 +2,27 @@
 
 int main()
 {
-	// Test Status
-	INFO_LOG("String", true);
-	WARNING_LOG("String", true);
-	ERROR_LOG("String", true);
-	FATALERROR_LOG("String", true);
-	REGISTER_LOG("String", true);
-	INITIALIZATION_LOG("String", true);
-	CLIENT_LOG("String", true);
-	SERVER_LOG("String", true);
-	EXCEPTION_LOG("String", true);
+	// Test Args
+	LOGINFO("Test no args");
+    LOGINFO("Test args \"true\"", true);
+    LOGINFO("Test args \"false\"", false);
+
+	// Test status
+	LOGINFO("LOGINFO");
+	LOGWARNING("LOGWARNING");
+	LOGERROR("LOGERROR");
+	LOGFATALERROR("LOGFATALERROR");
+	LOGREGISTER("LOGREGISTER");
+	LOGINITIALIZATION("LOGINITIALIZATION");
+	LOGCLIENT("LOGCLIENT");
+	LOGSERVER("LOGSERVER");
+	LOGEXCEPTION("LOGEXCEPTION");
 
 	// Test type
-	INFO_LOG(L"WString", true);
-	INFO_LOG(12345, true);
-	INFO_LOG(3.14, true);
-
-	// Test visible console
-	INFO_LOG("String", false);
+	LOGINFO("std::string");
+	LOGINFO(L"std::wstring");
+	LOGINFO(12345);
+	LOGINFO(3.14);
 
 	system("pause");
 	return 0;
