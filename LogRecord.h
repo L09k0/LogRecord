@@ -51,7 +51,7 @@ public:
 		_ERROR,
 		_FATALERROR,
 		_REGISTER,
-		_INITIALIZATION,
+		_INIT,
 		_CLIENT,
 		_SERVER,
 		_EXCEPTION
@@ -142,15 +142,15 @@ constexpr auto LOGREGISTER(T1 MSG, T2 PRINT) -> decltype(auto)
 }
 
 template<class T>
-constexpr auto LOGINITIALIZATION(T&& MSG) -> decltype(auto)
+constexpr auto LOGINIT(T&& MSG) -> decltype(auto)
 {
-	return LogRecord::GetInstance()->msg(std::forward<T>(MSG), LogRecord::StatusMsg::_INITIALIZATION, false);
+	return LogRecord::GetInstance()->msg(std::forward<T>(MSG), LogRecord::StatusMsg::_INIT, false);
 }
 
 template<class T1, class T2>
-constexpr auto LOGINITIALIZATION(T1 MSG, T2 PRINT) -> decltype(auto)
+constexpr auto LOGINIT(T1 MSG, T2 PRINT) -> decltype(auto)
 {
-	return LogRecord::GetInstance()->msg(std::forward<T1>(MSG), LogRecord::StatusMsg::_INITIALIZATION, PRINT);
+	return LogRecord::GetInstance()->msg(std::forward<T1>(MSG), LogRecord::StatusMsg::_INIT, PRINT);
 }
 
 template<class T>
