@@ -277,7 +277,7 @@ inline std::string LogRecord::GetStatusString(StatusMsg status)
 	case LogRecord::StatusMsg::_REGISTER:
 		return "[REGISTER]";
 		break;
-	case LogRecord::StatusMsg::_INITIALIZATION:
+	case LogRecord::StatusMsg::_INIT:
 		return "[INITIALIZATION]";
 		break;
 	case LogRecord::StatusMsg::_CLIENT:
